@@ -7,25 +7,39 @@
 // Dans le processus de rendu (page web).
 
 // Network interfaces
-let port = ":8080"
-let fulladdr = ""
-let address,
-    ifaces = require('os').networkInterfaces();
-for (const dev in ifaces) {
-    ifaces[dev].filter((details) => details.family === 'IPv4' && details.internal === false ? address = details.address: undefined);
-}
-shortaddress = address.replace("192.168.", "");
-fulladdr = "http://"+ address + port
-// Print the result
-console.log(fulladdr)
-
+const prompt = require('electron-prompt');
 const http = require("http")
-document.getElementById('localip').innerText += " " +  shortaddress
-document.getElementById('id').innerText += " " +  shortaddress
 
-http.get(fulladdr+"?connection=Success", res => {
-    setTimeout(() => {}, 500);
+let ip = "";
+let port = ":443"
+
+
+prompt({
+    title: 'Insert the client ID',
+    label: "Client ID (It's on the other window's name)",
+    icon : 'assets/imgs/nohitcombologo.jpg',
+    value: '0.0',
+    height : 200,
+    inputAttrs: {
+        type: 'text'
+    },
+    type: 'input'
 })
+    .then((r) => {
+
+        if (r === null) {
+            console.log('user cancelled');
+        } else {
+            ip = "http://192.168." + r + port
+            console.log(ip)
+            http.get(ip+"?connection=Success", res => {
+                setTimeout(() => {}, 500);
+            })
+        }
+    })
+    .catch(console.error);
+
+// Print the result
 
 const mappingAxis = ['Wheel', 'Accelerator', 'Brake', 'Unknown', 'Unknown', 'Clutch', 'Unknown', 'Unknown', 'Unknown', 'D_pad']
 let buttonMapping = []
@@ -40,7 +54,7 @@ window.addEventListener('gamepadconnected', (event) => {
             if(gamepad.id.includes('G920')){
                 document.getElementById("device").innerText= gamepad.id
                 if(configLoaded === false){
-                    http.get(fulladdr+"?device="+gamepad.id, res => {
+                    http.get(ip+"?device="+gamepad.id, res => {
                         setTimeout(() => {}, 500);
                     })
 
@@ -69,20 +83,20 @@ window.addEventListener('gamepadconnected', (event) => {
                 }
                 for (const [index, axis] of gamepad.axes.entries()) {
                     if(mappingAxis[index] !== 'Unknown'){
-                        http.get(fulladdr+"?"+ mappingAxis[index] + '=' + axis, res => {
+                        http.get(ip+"?"+ mappingAxis[index] + '=' + axis, res => {
                             setTimeout(() => {}, 500);
                         })
                     }
                 }
                 for (const [index, button] of gamepad.buttons.entries()) {
-                    http.get(fulladdr+"?"+ buttonMapping[index] + '=' + button.value, res => {
+                    http.get(ip+"?"+ buttonMapping[index] + '=' + button.value, res => {
                         setTimeout(() => {}, 500);
                     })
                 }
             }
             if(gamepad.id.includes('G29')){
                 if(configLoaded === false){
-                    http.get(fulladdr+"?device="+gamepad.id, res => {
+                    http.get(ip+"?device="+gamepad.id, res => {
                         setTimeout(() => {}, 500);
                     })
 
@@ -116,13 +130,13 @@ window.addEventListener('gamepadconnected', (event) => {
                 }
                 for (const [index, axis] of gamepad.axes.entries()) {
                     if(mappingAxis[index] !== 'Unknown'){
-                        http.get(fulladdr+"?"+ mappingAxis[index] + '=' + axis, res => {
+                        http.get(ip+"?"+ mappingAxis[index] + '=' + axis, res => {
                             setTimeout(() => {}, 500);
                         })
                     }
                 }
                 for (const [index, button] of gamepad.buttons.entries()) {
-                    http.get(fulladdr+"?"+ buttonMapping[index] + '=' + button.value ? 'on' : 'off', res => {
+                    http.get(ip+"?"+ buttonMapping[index] + '=' + button.value ? 'on' : 'off', res => {
                         setTimeout(() => {}, 500);
                     })
                 }
