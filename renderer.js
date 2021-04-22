@@ -11,7 +11,7 @@ const prompt = require('electron-prompt');
 const http = require("http")
 
 let ip = "";
-let port = ":443"
+let port = 8080
 
 
 prompt({
@@ -30,7 +30,7 @@ prompt({
         if (r === null) {
             console.log('user cancelled');
         } else {
-            ip = "http://192.168." + r + port
+            ip = "http://192.168." + r + ":" +port
             console.log(ip)
             http.get(ip+"?connection=Success", res => {
                 setTimeout(() => {}, 500);
