@@ -1,12 +1,12 @@
 {
-  "name": "steering-wheel-layout",
+  "name": "steering-wheel-layout-client",
   "version": "1.0.2",
   "description": "A layout designed for two-pc stream",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/Dizi0/Tekken-7-Save-Manager",
+  "repository": "https://github.com/Dizi0/Steering-wheel-layout-client",
   "keywords": [
     "Tekken 7",
     "Save Manager"
