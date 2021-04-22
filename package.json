@@ -1,6 +1,6 @@
 {
   "name": "steering-wheel-layout-client",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A layout designed for two-pc stream",
   "main": "main.js",
   "scripts": {
